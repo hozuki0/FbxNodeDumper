@@ -1,0 +1,3 @@
+[submodule "FbxWriter"]
+	path = FbxWriter
+	url = git@github.com:hamish-milne/FbxWriter.git
