@@ -8,6 +8,6 @@ namespace Sazanka.Model
 {
     public class FbxNodeModel
     {
-        public ReactiveCollection<string> Names { get; set; } = new ReactiveCollection<string>();
+        public ReactiveCollection<View.FbxNodeItem> Nodes { get; set; } = new ReactiveCollection<View.FbxNodeItem>();
     }
 }

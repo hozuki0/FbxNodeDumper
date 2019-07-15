@@ -9,6 +9,9 @@
         Drop="Window_Drop"
         PreviewDragOver="Window_PreviewDragOver">
     <Grid>
-        <ListView ItemsSource="{Binding NodeNames}" Margin="0,0,573,0"/>
+        <Menu>
+            <MenuItem Header="Clear" Command="{Binding Clear}"></MenuItem>
+        </Menu>
+        <TreeView ItemsSource="{Binding Nodes}" Margin="0,21,573,0"/>
     </Grid>
 </Window>

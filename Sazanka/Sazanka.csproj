@@ -81,6 +81,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\FbxNodeModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="View\FbxNodeItem.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -122,7 +123,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="View\" />
+    <ProjectReference Include="..\FbxWriter\Fbx\Fbx.csproj">
+      <Project>{07a221ac-5238-4c77-96de-e792c49d23e1}</Project>
+      <Name>Fbx</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

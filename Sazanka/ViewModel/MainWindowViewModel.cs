@@ -6,6 +6,9 @@ using Sazanka.Model;
 using System.Reactive;
 using System.Reactive.Subjects;
 using Reactive.Bindings;
+using Fbx;
+using System.Linq;
+
 
 namespace Sazanka.ViewModel
 {
@@ -31,16 +34,37 @@ namespace Sazanka.ViewModel
     public class MainWindowViewModel
     {
         private FbxNodeModel nodeModel = new FbxNodeModel();
-        public ReactiveCollection<string> NodeNames => nodeModel.Names;
-        public EventDispatchCommand OnLoadClicked { get; } = new EventDispatchCommand();
-        public ReactiveProperty<string> Path { get; set; } = new ReactiveProperty<string>("Default");
+        public ReactiveCollection<View.FbxNodeItem> Nodes => nodeModel.Nodes;
+
+        public EventDispatchCommand Clear { get; private set; } = new EventDispatchCommand();
 
         public MainWindowViewModel()
         {
-            OnLoadClicked.OnEvent.Subscribe(_ =>
+            Clear.OnEvent.Subscribe(_ =>
             {
-                Console.WriteLine($"OnLoad:{Path.Value}");
+                Nodes.Clear();
             });
+        }
+
+        public void Load(string path)
+        {
+            var rootNode = new View.FbxNodeItem(System.IO.Path.GetFileName(path));
+            var content = FbxIO.ReadBinary(path);
+            foreach (var item in content.Nodes.Where(n => n != null))
+            {
+                SeekNode(rootNode, item);
+            }
+            nodeModel.Nodes.Add(rootNode);
+        }
+
+        private void SeekNode(View.FbxNodeItem parent, FbxNode node)
+        {
+            var nodeItem = new View.FbxNodeItem(node.Name);
+            parent.Items.Add(nodeItem);
+            foreach (var item in node.Nodes.Where(n => n != null))
+            {
+                SeekNode(nodeItem, item);
+            }
         }
     }
 }

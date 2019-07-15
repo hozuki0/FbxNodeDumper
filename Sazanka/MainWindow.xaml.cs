@@ -20,21 +20,23 @@ namespace Sazanka
     /// </summary>
     public partial class MainWindow : Window
     {
+        ViewModel.MainWindowViewModel vm;
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new ViewModel.MainWindowViewModel();
+            vm = new ViewModel.MainWindowViewModel();
+            this.DataContext = vm;
         }
 
         private void Window_PreviewDragOver(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop, true))
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
             {
-                e.Effects = System.Windows.DragDropEffects.Copy;
+                e.Effects = DragDropEffects.Copy;
             }
             else
             {
-                e.Effects = System.Windows.DragDropEffects.None;
+                e.Effects = DragDropEffects.None;
             }
             e.Handled = true;
         }
@@ -43,7 +45,12 @@ namespace Sazanka
         {
             var dropFiles = e.Data.GetData(System.Windows.DataFormats.FileDrop) as string[];
             if (dropFiles == null) return;
-            Console.WriteLine(dropFiles[0]);
+
+            var fbxFiles = dropFiles.Where(n => n.ToLower().Contains(".fbx"));
+            foreach (var item in fbxFiles)
+            {
+                vm.Load(item);
+            }
         }
     }
 }
